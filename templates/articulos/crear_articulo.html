@@ -1,0 +1,13 @@
+{% extends 'post.html' %}
+
+{% block contenido %}
+<div class="crear-articulo-container">
+    <h2>Crear Artículo</h2>
+    <form method="post" enctype="multipart/form-data" style="border: 1px solid #ddd; padding: 10px; max-width: 400px;">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit"
+            style="padding: 5px; background-color: #4CAF50; color: white; border: none;">Guardar</button>
+    </form>
+</div>
+{% endblock contenido %}

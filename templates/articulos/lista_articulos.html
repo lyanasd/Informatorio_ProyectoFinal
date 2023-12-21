@@ -1,0 +1,13 @@
+{% extends 'post.html' %}
+
+{% block contenido %}
+<div class="articulo-container">
+    <h2>Lista de Artículos</h2>
+    {% for articulo in articulos %}
+    <div class="articulo" style="border: 1px solid #ddd; padding: 10px; margin-bottom: 20px;">
+        <h3>{{ articulo.titulo }}</h3>
+        <p>{{ articulo.contenido }}</p>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
