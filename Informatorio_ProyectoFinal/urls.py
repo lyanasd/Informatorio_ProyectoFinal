@@ -17,24 +17,28 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from . import views
-from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+from django.conf.urls.static import static
+from django.conf import settings
 from django.contrib.auth import views as auth
 
 urlpatterns = [
     path('admin/', admin.site.urls),
 
     path('', views.Home, name ='inicio'),
-    path('about', views.About, name = 'about'),
-    path('contacto', views.Contacto, name = 'contacto'),
-    path('post', views.Post, name = 'post'),
+    path('contacto', views.Contacto, name ='contacto'),
+    path('about', views.About, name ='about'),
+
+    #APP NOTICIAS
+    path('noticias/', include('apps.noticias.urls')),
 
     #APP USUARIOs
     path('Usuarios/', include('apps.usuarios.urls')),
 
+    #APP COMENTARIOS
+    path('Comentarios/', include('apps.comentarios.urls')),
+
     #LOGIN Y LOGOUT
-    path('login/',auth.LoginView.as_view(template_name='usuarios/login.html'), name ='login'),
-    path('logout/',auth.LogoutView.as_view(), name ='logout'),
-]
+    path('login/',auth.LoginView.as_view(template_name='usuarios/login.html'),name='login'),
+    path('logout/',auth.LogoutView.as_view(),name="logout"),
 
-urlpatterns+=staticfiles_urlpatterns()
-
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

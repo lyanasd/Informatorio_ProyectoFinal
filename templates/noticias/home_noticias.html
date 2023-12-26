@@ -1,0 +1,104 @@
+{% extends 'post.html' %}
+
+{% block contenido %}
+
+<header class="masthead" style="background-image: url('static/assets/img/home-bg.jpg')">
+	<div class="container position-relative px-4 px-lg-5">
+		<div class="row gx-4 gx-lg-5 justify-content-center">
+			<div class="col-md-10 col-lg-8 col-xl-7">
+				<div class="site-heading">
+					<h1>Emprendimientos Chaco</h1>
+					<span class="subheading">A Blog Theme by Start Bootstrap</span>
+				</div>
+			</div>
+		</div>
+	</div>
+</header>
+
+
+
+<aside> 
+	<div class="row " style="padding-top: 5px;" >
+	<div class="col-md-4 justify-content-center align-items-center " >
+		FILTRAR POR CATEGORIA
+		<ul>
+			{% if "?" in request.get_full_path %}
+				<li><a href="{{ request.get_full_path }}&categoria=0">TODAS</a></li>
+				{% for c in categorias %}
+					<li><a href="{{ request.get_full_path }}&categoria={{c.id}}">{{c.nombre}}</a></li>
+				{% endfor %}
+			{% else %}
+				<li><a href="?categoria=0">TODAS</a></li>
+				{% for c in categorias %}
+					<li><a href="?categoria={{c.id}}">{{c.nombre}}</a></li>
+				{% endfor %}
+			{% endif %}
+		</ul>
+
+		ORDENAR
+		<ul>
+			{% if "?" in request.get_full_path %}
+				<li><a href="{{ request.get_full_path }}&orden=asc">ASC</a></li>
+				<li><a href="{{ request.get_full_path }}&orden=dsc">DSC</a></li>
+			{% else %}
+				<li><a href="?orden=asc">ASC</a></li>
+				<li><a href="?orden=dsc">DSC</a></li>
+			{% endif %}
+			
+			
+		</ul>
+	</div>
+	</div>
+</aside>
+
+	{% for n in noticias %}
+	<section class=" d-block" >
+	<div class="container text-center " >
+		
+		<div class="row gx-4 gx-lg-5">								
+            <div class="col-md-4 mb-5" style="margin: 10px;">
+				<div class="card h-100 " style="background-color: #e1e9fc; border-radius: 10px;">
+				<p><img src="{{n.imagen.url}}" width="200px"></p>
+                    <div class="text text-2 pt-2 mt-3">
+									
+					<span class="category mb-3 d-block"><a href="#">{{n.categoria}}</a></span>
+					<h3 class="mb-4"><a href="#">{{n.titulo}}</a></h3>
+					<p class="mb-4">{{n.contenido}}</p>
+																
+				
+				<p><strong>FECHA: </strong>{{n.creado}}</p>
+				<p><strong>CREADO POR: {{n.usuario}}</strong></p>
+				<a href="{% url 'noticias:detalle_noticia' n.pk %}">
+				
+				</a>
+				<a class="btn btn-primary btn-sm" style="border-radius: 6px;"  href="{% url 'noticias:detalle_noticia' n.pk %}">Ver mas</a>
+				{% if request.user == n.usuario or request.user.is_staff %}
+				<a class="btn btn-primary btn-sm" style="border-radius: 6px;" href="{% url 'noticias:modificar_noticia' n.pk %}">Modificar</a>
+				<a class="btn btn-primary btn-sm" style="border-radius: 6px;"href="{% url 'noticias:borrar_noticia' n.pk %}">Borrar</a>
+				{% endif %}
+			</div>
+		</div>
+	</div>
+	</div>
+	{% endfor %}
+	</div>	
+
+	
+	</section>
+
+	
+	
+	
+	
+	
+	
+	
+	{% endblock contenido %}
+
+
+
+
+
+
+
+

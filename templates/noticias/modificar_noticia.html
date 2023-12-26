@@ -1,0 +1,12 @@
+{% extends 'post.html' %}
+
+
+{% block contenido %}
+<div class="row align-self-center text-center" style="padding-top: 150px;">
+	<form action="" method="post" enctype="multipart/form-data">{% csrf_token %}         
+         <h3>MODIFICAR NOTICIA</h3>
+          {{form.as_p}}
+          <p><input class="btn btn-primary btn-lg" style="border-radius: 25px;" type="submit" value="Confirmar"></p>
+        </form>
+      </div>
+{% endblock contenido %}
