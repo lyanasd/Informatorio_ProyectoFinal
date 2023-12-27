@@ -8,7 +8,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 
     path('', views.Home, name ='inicio'),
-    path('about', views.About, name = 'about'),
     path('contacto', views.Contacto, name = 'contacto'),
     path('post', views.Post, name = 'post'),
 
@@ -20,7 +19,9 @@ urlpatterns = [
     path('logout/',auth.LogoutView.as_view(), name ='logout'),
 
     #APP ARTICULOS
-    path('articulos/', include('apps.articulos.urls')),
+    #path('articulos/', include('apps.articulos.urls')),
+    path('articulos/', include(('apps.articulos.urls', 'articulos'))),
+
 ]
 
 urlpatterns+=staticfiles_urlpatterns()

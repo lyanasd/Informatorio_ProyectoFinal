@@ -9,3 +9,10 @@ class Articulo(models.Model):
 
     def __str__(self):
         return self.titulo
+
+def detalle_articulo(request, pk):
+    # Recupera el artículo usando el identificador único (pk)
+    articulo = get_object_or_404(Articulo, pk=pk)
+
+    # Pasar el artículo al template
+    return render(request, 'articulos/detalle_articulo.html', {'articulo': articulo})        

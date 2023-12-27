@@ -34,13 +34,14 @@
                                 <ul class="navbar-nav ms-auto py-4 py-lg-0">
                                         <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4"
                                                         style="color: #292626;" href="{%url 'inicio' %}">Inicio</a></li>
-                                        <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4"
-                                                        style="color: #292626;" href="{%url 'about' %}">About</a></li>
-                                        <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4"
-                                                        style="color: #292626;" href="{%url 'post' %}">Sample Post</a>
+                                        <li class="nav-item">
+                                                <a class="nav-link px-lg-3 py-3 py-lg-4" style="color: #292626;"
+                                                        href="{% url 'articulos:lista_articulos' %}">Lista de
+                                                        Artículos</a>
+                                        </li>
                                         </li>
                                         <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4"
-                                                        style="color: #292626;" href="{%url 'contacto' %}">Contact</a>
+                                                        style="color: #292626;" href="{%url 'contacto' %}">Contacto</a>
                                         </li>
                                         {% if user.is_authenticated %}
                                         <li class="nav-item">
