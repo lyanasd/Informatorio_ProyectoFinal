@@ -13,4 +13,5 @@ class CommentForm(forms.ModelForm):
         fields = ['text']
         widgets = {
             'author': forms.HiddenInput(),
+            'text': forms.Textarea(attrs={'rows': 4}),
         }

@@ -103,6 +103,7 @@ def detalle_articulo(request, pk):
 def lista_articulos(request):
     # Obtén todos los artículos
     articulos = Articulo.objects.all()
+    articulos = articulos.order_by('-fecha_creacion')
 
     # Filtrado por categoría
     categoria = request.GET.get('categoria')
