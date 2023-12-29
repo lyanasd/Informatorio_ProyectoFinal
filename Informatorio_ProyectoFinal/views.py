@@ -11,10 +11,6 @@ def Home(request):
     # Renderizar la plantilla con el contexto
     return render(request, 'home.html', context)
 
-def Contacto(request): 
-
-    return render(request, 'contact.html')
-
 def Post(request): 
 
     return render(request, 'post.html')

@@ -41,17 +41,20 @@
                 {% for comentario in comentarios %}
                 <p>
                     {{ comentario.author.username }}: {{ comentario.text }}
+                    ({{ comentario.created_date|date:"F j, Y H:i" }})
                     {% if request.user == comentario.author %}
                     <a href="{% url 'articulos:editar_comentario' pk=comentario.pk %}">Editar</a>
                     <a href="{% url 'articulos:eliminar_comentario' pk=comentario.pk %}">Eliminar</a>
                     {% endif %}
                 </p>
                 {% endfor %}
+                {% if user.is_authenticated %}
                 <form method="post" action="{% url 'articulos:detalle_articulo' pk=articulo.id %}">
                     {% csrf_token %}
-                    {{ form.as_p }}
+                    {{ form }}
                     <button type="submit" class="btn btn-primary rounded" style="border-radius: 25px;">Comentar</button>
                 </form>
+                {% endif %}
                 {% if request.user == articulo.autor %}
                 <hr />
                 <a href="{% url 'articulos:editar_articulo' pk=articulo.id %}" class="btn btn-secondary rounded">

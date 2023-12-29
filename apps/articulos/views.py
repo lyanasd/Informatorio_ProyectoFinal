@@ -85,7 +85,7 @@ def borrar_articulo(request, pk):
     return redirect('articulos:detalle_articulo', pk=pk)
 
 def detalle_articulo(request, pk):
-    articulo = get_object_or_404(Articulo, pk=pk)
+    articulo = get_object_or_404(Articulo, pk=pk) 
     comentarios = Comment.objects.filter(articulo=articulo)
     form = CommentForm()
 
@@ -139,20 +139,17 @@ def lista_articulos(request):
  
 @login_required(login_url='/login/') # Requerir la autenticación del usuario
 def crear_articulo(request):
-    # Verificar si la solicitud es de tipo POST 
+
     if request.method == 'POST':
-        # Crear una instancia del formulario ArticuloForm con los datos de la solicitud
+
         form = ArticuloForm(request.POST, request.FILES)
         
-        # Verificar si el formulario es válido
         if form.is_valid():
-            # Guardar el artículo en la base de datos sin confirmar la operación
             articulo = form.save(commit=False)
             
             # Asignar el autor del artículo como el usuario actual
             articulo.autor = request.user
             
-            # Confirmar la operación de guardado en la base de datos
             articulo.save()
             
             # Redirigir a la página de detalle del artículo recién creado
