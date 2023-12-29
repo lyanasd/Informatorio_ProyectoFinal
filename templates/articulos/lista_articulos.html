@@ -25,6 +25,38 @@
                 Redactar un Nuevo Artículo
             </a>
             {% endif %}
+            <form method="get" action="{% url 'articulos:lista_articulos' %}" class="form-inline mt-3">
+                <h2 class="post-title">Filtrar artículos</h2>
+                <div class="form-group mx-2">
+                    <label for="categoria">Categoría:</label>
+                    <select name="categoria" id="categoria" class="form-control">
+                        <option value="" selected>Seleccione una categoría</option>
+                        <!-- Opciones de categoría -->
+                    </select>
+                </div>
+
+                <div class="form-group mx-2">
+                    <label for="antiguedad">Antigüedad:</label>
+                    <select name="antiguedad" id="antiguedad" class="form-control">
+                        <option value="" selected>Seleccione antigüedad</option>
+                        <option value="asc">Ascendente</option>
+                        <option value="desc">Descendente</option>
+                    </select>
+                </div>
+
+                <div class="form-group mx-2">
+                    <label for="orden">Orden alfabético:</label>
+                    <select name="orden" id="orden" class="form-control">
+                        <option value="" selected>Seleccione orden</option>
+                        <option value="asc">Ascendente</option>
+                        <option value="desc">Descendente</option>
+                    </select>
+                </div>
+                <hr />
+                <button type="submit" class="btn btn-primary" style="border-radius: 25px;">
+                    <i class="fas fa-filter"></i> Filtrar
+                </button>
+            </form>
             <!-- Iterar sobre los últimos artículos -->
             {% for articulo in articulos %}
             <div class="post-preview">
@@ -33,7 +65,7 @@
                     {% if articulo.subtitulo %}
                     <h3 class="post-subtitle">{{ articulo.subtitulo }}</h3>
                     {% endif %}
-                    <p>{{ articulo.contenido|truncatewords:30 }}</p> <!-- Mostrar el contenido truncado -->
+                    <p>{{ articulo.contenido|truncatewords:30 }}</p>
                 </a>
                 <p class="post-meta">
                     Publicado por <a href="#!">{{ articulo.autor.username }}</a> el {{ articulo.fecha_creacion }}
@@ -43,6 +75,7 @@
             <hr class="my-4" />
             {% endfor %}
             <!-- Paginación -->
+            <p class="text-muted">Página {{ articulos.number }} de {{ articulos.paginator.num_pages }}</p>
             <div class="d-flex justify-content-between mb-4">
                 {% if articulos.has_previous %}
                 <a class="btn btn-primary text-uppercase" style="border-radius: 25px;"
@@ -50,8 +83,6 @@
                     Anterior
                 </a>
                 {% endif %}
-
-                <p class="text-muted">Página {{ articulos.number }} de {{ articulos.paginator.num_pages }}</p>
 
                 {% if articulos.has_next %}
                 <a class="btn btn-primary text-uppercase" style="border-radius: 25px;"

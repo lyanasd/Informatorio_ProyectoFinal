@@ -19,9 +19,7 @@ urlpatterns = [
     path('logout/',auth.LogoutView.as_view(), name ='logout'),
 
     #APP ARTICULOS
-    #path('articulos/', include('apps.articulos.urls')),
     path('articulos/', include(('apps.articulos.urls', 'articulos'))),
-
 ]
 
 urlpatterns+=staticfiles_urlpatterns()
