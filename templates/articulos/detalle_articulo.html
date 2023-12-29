@@ -36,7 +36,7 @@
         <div class="row gx-4 gx-lg-5 justify-content-center">
             <div class="col-md-10 col-lg-8 col-xl-7">
                 <p>{{ articulo.contenido }}</p>
-
+                <hr />
                 <h2>Comentarios:</h2>
                 {% for comentario in comentarios %}
                 <p>
@@ -47,15 +47,13 @@
                     {% endif %}
                 </p>
                 {% endfor %}
-
-                <h2>Deja un comentario:</h2>
                 <form method="post" action="{% url 'articulos:detalle_articulo' pk=articulo.id %}">
                     {% csrf_token %}
                     {{ form.as_p }}
-                    <button type="submit">Comentar</button>
+                    <button type="submit" class="btn btn-primary rounded" style="border-radius: 25px;">Comentar</button>
                 </form>
-
                 {% if request.user == articulo.autor %}
+                <hr />
                 <a href="{% url 'articulos:editar_articulo' pk=articulo.id %}" class="btn btn-secondary rounded">
                     Editar artículo
                 </a>

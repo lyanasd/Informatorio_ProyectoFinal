@@ -26,6 +26,7 @@ def editar_comentario(request, pk):
 
 def eliminar_comentario(request, pk):
     comentario = get_object_or_404(Comment, pk=pk)
+    
     if request.user == comentario.author:
         if request.method == 'POST':
             # Eliminar el comentario y redirigir al detalle del artículo
@@ -33,10 +34,10 @@ def eliminar_comentario(request, pk):
             comentario.delete()
             return redirect('articulos:detalle_articulo', pk=articulo_pk)
         else:
-
-            return render(request, 'articulos/borrar_comentario.html', {'comentario': comentario})
+            # Asegúrate de incluir el objeto articulo en el contexto
+            return render(request, 'articulos/borrar_comentario.html', {'comentario': comentario, 'articulo': comentario.articulo})
     else:
-
+        # Redirigir al detalle del artículo si el usuario no tiene permisos
         return redirect('articulos:detalle_articulo', pk=comentario.articulo.pk)
 
 def agregar_comentario(request, pk):
