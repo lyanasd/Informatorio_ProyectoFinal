@@ -5,6 +5,49 @@ from django.contrib.auth.decorators import login_required
 from .models import Articulo
 from .forms import ArticuloForm
 from django.contrib import messages # ?
+from django.shortcuts import render, get_object_or_404
+from .models import Comment
+from .forms import CommentForm
+
+def editar_comentario(request, pk):
+    comentario = get_object_or_404(Comment, pk=pk)
+    if request.user == comentario.author:
+        if request.method == 'POST':
+            form = CommentForm(request.POST, instance=comentario)
+            if form.is_valid():
+                form.save()
+                return redirect('articulos:detalle_articulo', pk=comentario.articulo.pk)
+        else:
+            form = CommentForm(instance=comentario)
+        return render(request, 'articulos/editar_comentario.html', {'form': form})
+    else:
+        # Manejar el caso donde el usuario no es el autor del comentario
+        return redirect('articulos:detalle_articulo', pk=comentario.articulo.pk)
+
+def eliminar_comentario(request, pk):
+    comentario = get_object_or_404(Comment, pk=pk)
+    if request.user == comentario.author:
+        if request.method == 'POST':
+            # Eliminar el comentario y redirigir al detalle del artículo
+            articulo_pk = comentario.articulo.pk
+            comentario.delete()
+            return redirect('articulos:detalle_articulo', pk=articulo_pk)
+        else:
+
+            return render(request, 'articulos/borrar_comentario.html', {'comentario': comentario})
+    else:
+
+        return redirect('articulos:detalle_articulo', pk=comentario.articulo.pk)
+
+def agregar_comentario(request, pk):
+    if request.method == 'POST':
+        comentario_texto = request.POST.get('comentario_texto')
+        Comment.objects.create(articulo_id=pk, author=request.user, text=comentario_texto)
+    return redirect('articulos:detalle_articulo', pk=pk)
+
+def ver_comentarios(request, pk):
+    articulo_comentarios = Comment.objects.filter(articulo_id=pk)
+    return render(request, 'articulos/detalle_articulo.html', {'comentarios': articulo_comentarios})
 
 @login_required(login_url='/login/')
 def editar_articulo(request, pk):
@@ -42,12 +85,19 @@ def borrar_articulo(request, pk):
 
 def detalle_articulo(request, pk):
     articulo = get_object_or_404(Articulo, pk=pk)
+    comentarios = Comment.objects.filter(articulo=articulo)
+    form = CommentForm()
 
-    # Verificar si el campo 'imagen' tiene un valor antes de renderizar la plantilla
-    if articulo.imagen:
-        return render(request, 'articulos/detalle_articulo.html', {'articulo': articulo})
-    else:
-        return render(request, 'articulos/detalle_articulo.html', {'articulo': articulo, 'imagen_vacia': True})
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comentario = form.save(commit=False)
+            comentario.articulo = articulo
+            comentario.author = request.user
+            comentario.save()
+            return redirect('articulos:detalle_articulo', pk=pk)
+
+    return render(request, 'articulos/detalle_articulo.html', {'articulo': articulo, 'comentarios': comentarios, 'form': form})
 
 def lista_articulos(request):
     # Obtén todos los artículos
@@ -111,3 +161,20 @@ def crear_articulo(request):
         form = ArticuloForm()
         
     return render(request, 'articulos/crear_articulo.html', {'form': form})
+
+def detalle_articulo(request, pk):
+    articulo = get_object_or_404(Articulo, pk=pk)
+    comentarios = Comment.objects.filter(articulo=articulo)
+
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comentario = form.save(commit=False)
+            comentario.articulo = articulo
+            comentario.author = request.user
+            comentario.save()
+
+    else:
+        form = CommentForm()
+
+    return render(request, 'articulos/detalle_articulo.html', {'articulo': articulo, 'comentarios': comentarios, 'form': form})

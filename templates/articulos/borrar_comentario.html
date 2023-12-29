@@ -1,0 +1,12 @@
+<h2>Eliminar Comentario</h2>
+<p>¿Estás seguro de que deseas eliminar este comentario?</p>
+
+<div>
+    <strong>Comentario:</strong>
+    <p>{{ comentario.text }}</p>
+</div>
+
+<form method="post">
+    {% csrf_token %}
+    <button type="submit">Sí, eliminar</button>
+</form>
