@@ -59,7 +59,6 @@ def editar_articulo(request, pk):
             form = ArticuloForm(request.POST, request.FILES, instance=articulo)
             if form.is_valid():
                 form.save()
-                messages.success(request, 'Artículo editado con éxito.')
                 return redirect('articulos:detalle_articulo', pk=articulo.id)
         else:
             form = ArticuloForm(instance=articulo)
