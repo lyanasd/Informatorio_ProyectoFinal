@@ -3,7 +3,7 @@
 {%load static%}
 {% block contenido %}
 
-<header class="masthead" style="background-image: url('static/assets/img/home-bg.jpg')">
+<header class="masthead" style="background-image: url('/static/assets/img/home-bg.jpg')">
     <div class="container position-relative px-4 px-lg-5">
         <div class="row gx-4 gx-lg-5 justify-content-center">
             <div class="col-md-10 col-lg-8 col-xl-7">
@@ -31,7 +31,9 @@
                     <label for="categoria">Categoría:</label>
                     <select name="categoria" id="categoria" class="form-control">
                         <option value="" selected>Seleccione una categoría</option>
-                        <!-- Opciones de categoría -->
+                        {% for choice_value, choice_label in categorias_choices %}
+                        <option value="{{ choice_value }}">{{ choice_label }}</option>
+                        {% endfor %}
                     </select>
                 </div>
 
@@ -68,7 +70,8 @@
                     <p>{{ articulo.contenido|truncatewords:30 }}</p>
                 </a>
                 <p class="post-meta">
-                    Publicado por <a href="#!">{{ articulo.autor.username }}</a> el {{ articulo.fecha_creacion }}
+                    Publicado por <a href="#!">{{ articulo.autor.username }}</a>
+                    el {{ articulo.fecha_creacion }} en la categoría {{ articulo.get_categoria_display }}.
                 </p>
             </div>
             <!-- Divider-->

@@ -17,7 +17,7 @@
     </div>
 </header>
 {% else %}
-<header class="masthead">
+<header class="masthead" style="background-image: url('/static/assets/img/home-bg.jpg')">
     <div class="container position-relative px-4 px-lg-5">
         <div class="row gx-4 gx-lg-5 justify-content-center">
             <div class="col-md-10 col-lg-8 col-xl-7">
@@ -36,7 +36,10 @@
         <div class="row gx-4 gx-lg-5 justify-content-center">
             <div class="col-md-10 col-lg-8 col-xl-7">
                 <p>{{ articulo.contenido }}</p>
-                <span class="subheading">{{ articulo.fecha_creacion|date:"F j, Y H:i" }} por {{ articulo.autor }}</span>
+                <span class="subheading">
+                    Publicado por {{ articulo.autor.username }} el {{ articulo.fecha_creacion|date:"F j, Y H:i" }} en la
+                    categoría {{ articulo.get_categoria_display }}.
+                </span>
                 <hr />
                 <h2>Comentarios:</h2>
                 {% for comentario in comentarios %}

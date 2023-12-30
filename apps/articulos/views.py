@@ -3,11 +3,9 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from .models import Articulo
-from .forms import ArticuloForm
-from django.contrib import messages # ?
+from .forms import ArticuloForm, CommentForm, FiltroArticulosForm
 from django.shortcuts import render, get_object_or_404
 from .models import Comment
-from .forms import CommentForm
 
 def editar_comentario(request, pk):
     comentario = get_object_or_404(Comment, pk=pk)
@@ -101,7 +99,7 @@ def detalle_articulo(request, pk):
     return render(request, 'articulos/detalle_articulo.html', {'articulo': articulo, 'comentarios': comentarios, 'form': form})
 
 def lista_articulos(request):
-    # Obtén todos los artículos
+    # Obtener todos los artículos
     articulos = Articulo.objects.all()
     articulos = articulos.order_by('-fecha_creacion')
 
@@ -124,7 +122,7 @@ def lista_articulos(request):
     elif orden == 'desc':
         articulos = articulos.order_by('-titulo')
 
-    # Configura la paginación
+    # Paginación
     paginator = Paginator(articulos, 8)
     page = request.GET.get('page')
 
@@ -135,7 +133,11 @@ def lista_articulos(request):
     except EmptyPage:
         articulos = paginator.page(paginator.num_pages)
 
-    context = {'articulos': articulos}
+    # Crea una instancia del formulario de filtrado y pásalo al contexto
+    filtro_form = FiltroArticulosForm(request.GET)
+    categorias_choices = Articulo.CATEGORIAS_CHOICES
+
+    context = {'articulos': articulos, 'categorias_choices': categorias_choices, 'filtro_form': filtro_form}
     return render(request, 'articulos/lista_articulos.html', context)
  
 @login_required(login_url='/login/') # Requerir la autenticación del usuario
